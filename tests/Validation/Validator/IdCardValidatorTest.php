@@ -2,34 +2,41 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
+use Symfu\SimpleValidation\Validator\IdCardValidator;
 
 
-class IdCardValidatorTest extends ValidatorTestCase {
+class IdCardValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
-        $validator = new IdCardValidatorTest();
+        $validator = new IdCardValidator();
 
         $valid   = [true, ''];
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', 'test@example.com');
+        $result = $validator->validate('dummy', '450107199410224678');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', 'test_123@example.com');
+        $result = $validator->validate('dummy', '450126197003144566');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', 'test-123@example.com');
+        $result = $validator->validate('dummy', '450126197403282132');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', 'test-123@subdomain.subdomain.example.com');
+        $result = $validator->validate('dummy', '450105197212028041');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', 'test!@example.com');
+        $result = $validator->validate('dummy', '450105197212028040');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', 'test@ex!ample.com');
+        $result = $validator->validate('dummy', '0');
+        $this->assertEquals($result, $invalid);
+
+        $result = $validator->validate('dummy', '12456789');
+        $this->assertEquals($result, $invalid);
+
+        $result = $validator->validate('dummy', '45010519721202804121212');
         $this->assertEquals($result, $invalid);
     }
 }

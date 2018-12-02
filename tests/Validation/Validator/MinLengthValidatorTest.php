@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\MinLengthValidator;
 
 
-class MinLengthValidatorTest extends ValidatorTestCase {
+class MinLengthValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new MinLengthValidator('9');
 
@@ -45,7 +45,7 @@ class MinLengthValidatorTest extends ValidatorTestCase {
     }
 
     /**
-     * @expectedException \PHPUnit_Framework_Error_Warning
+     * @expectedException \PHPUnit\Framework\Error\Warning
      */
     public function testValidateFailed_1() {
         $validator = new MinLengthValidator('');
@@ -57,7 +57,7 @@ class MinLengthValidatorTest extends ValidatorTestCase {
     }
 
     /**
-     * @expectedException \PHPUnit_Framework_Error_Warning
+     * @expectedException \PHPUnit\Framework\Error\Warning
      */
     public function testValidateFailed_2() {
         $validator = new MinLengthValidator('a123');
@@ -69,7 +69,7 @@ class MinLengthValidatorTest extends ValidatorTestCase {
     }
 
     /**
-     * @expectedException \PHPUnit_Framework_Error_Warning
+     * @expectedException \PHPUnit\Framework\Error\Warning
      */
     public function testValidateFailed_3() {
         $validator = new MinLengthValidator('23*');

@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\MaxLengthValidator;
 
 
-class MaxLengthValidatorTest extends ValidatorTestCase {
+class MaxLengthValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new MaxLengthValidator('9');
 

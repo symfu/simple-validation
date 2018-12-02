@@ -18,10 +18,6 @@
 echo "Bootstrapping Test Environment......\n";
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/Helper/SimpleRecordTestCase.php';
-require_once __DIR__ . '/Helper/DatabaseTest.php';
-require_once __DIR__ . '/Helper/AdapterTest.php';
-
 
 error_reporting(E_ALL | E_STRICT);
 

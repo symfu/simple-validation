@@ -14,7 +14,7 @@ class EnumValidator extends BaseValidator
 
     public function validate($fieldName, $value, $formValues = [])
     {
-        if($value && $this->args && !in_array($value, $this->args))
+        if(strlen($value) > 0 && $this->args && !in_array($value, (array)$this->args))
         {
             return [false, self::message];
         }
@@ -34,12 +34,11 @@ class EnumValidator extends BaseValidator
         array_walk($validEnums, function(&$v){ $v = trim($v);});
         $validEnums = array_filter($validEnums, function($v){ return $v !== '' && $v !== null;});
 
-        parent::setArgs($validEnums);
+        $this->args = $validEnums;
     }
 
     public function toJQueryValidateRule()
     {
-        $target = $this->args;
-        return array('equalTo' => $target);
+        return [];
     }
 }

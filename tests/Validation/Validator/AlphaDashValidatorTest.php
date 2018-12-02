@@ -1,10 +1,10 @@
 <?php
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\AlphaDashValidator;
 
-class AlphaDashValidatorTest extends ValidatorTestCase
+class AlphaDashValidatorTest extends SimpleValidationTestCase
 {
     public function testValidate()
     {

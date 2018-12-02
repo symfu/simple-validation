@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\NumericValidator;
 
 
-class NumericValidatorTest extends ValidatorTestCase {
+class NumericValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new NumericValidator();
 

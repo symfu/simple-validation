@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\MaxValidator;
 
 
-class MaxValidatorTest extends ValidatorTestCase {
+class MaxValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         // valid
         $validator = new MaxValidator('99');

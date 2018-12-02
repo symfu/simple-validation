@@ -1,11 +1,5 @@
 <?php
-
-namespace Symfu\SimpleValidation\Helper;
-
-use Symfu\SimpleValidation\Constants;
-use Symfu\SimpleValidation\Registry;
-use Symfu\SimpleValidation\ValidatorInterface;
-use Symfu\SimpleValidation\Validators;
+namespace Symfu\SimpleValidation;
 
 class Utils {
     public static function parseValidator($valicatorInfo) {
@@ -17,15 +11,7 @@ class Utils {
             return [$valicatorInfo, null];
         }
 
-        return self::getCachedInstance($valicatorInfo, $cachedValidators, $cachedArgs, $customValidators, 'validators');
-    }
-
-    public static function parseProcessor($processorInfo) {
-        $cachedProcessors = Registry::getRegistry(Constants::PROCESSOR_INSTANCES);
-        $cachedArgs       = Registry::getRegistry(Constants::PROCESSOR_INSTANCE_ARGS);
-        $customProcessors = Registry::getRegistry(Constants::CUSTOM_PROCESSORS);
-
-        return self::getCachedInstance($processorInfo, $cachedProcessors, $cachedArgs, $customProcessors, 'processors');
+        return self::getCachedInstance($valicatorInfo, $cachedValidators, $cachedArgs, $customValidators);
     }
 
     private static function parseInfo($info) {
@@ -40,11 +26,11 @@ class Utils {
             $args = null;
         }
 
-        return [$name, trim($args)];
+        return [$name, $args === null ? null : trim($args)];
     }
 
     // do some dirty works here
-    private static function getCachedInstance($info, Registry $cachedInctances, Registry $cachedArgs, Registry $customInstances, $serviceCatetory) {
+    private static function getCachedInstance($info, Registry $cachedInctances, Registry $cachedArgs, Registry $customValidators) {
         if ($cachedInctances->has($info)) {
             $cachedObject = $cachedInctances->get($info);
             $args         = $cachedArgs->get($info);
@@ -54,36 +40,32 @@ class Utils {
 
         list($objectName, $args) = self::parseInfo($info);
 
-        if ($customInstances->has($info)) {
-            $customObject = $customInstances->get($info);
-            if($customObject instanceof ValidatorInterface && $args) {
-                $customObject->setArgs($args);
+        if ($customValidators->has($info)) {
+            $customValidator = $customValidators->get($info);
+            if($customValidator instanceof ValidatorInterface && $args) {
+                $customValidator->setArgs($args);
             }
-            $cachedInctances->set($info, $customObject);
+            $cachedInctances->set($info, $customValidator);
             $cachedArgs->set($info, $args);
 
-            return [$customObject, $args];
+            return [$customValidator, $args];
         }
 
-        $instance                   = null;
-        $buildinObjectFqcnParameter = "simple_form.{$serviceCatetory}.buildins.{$objectName}.class";
-        $customObjectFqcnParameter  = "simple_form.{$serviceCatetory}.custom.{$objectName}.class";
+        $validatorInstance     = null;
+        $validatorKey = "simple_validation.validator.{$objectName}.class";
 
-        if (isset(Validators::$buildinValidators[$buildinObjectFqcnParameter])) {
-            $processorFQCN = Validators::$buildinValidators[$buildinObjectFqcnParameter];
-            $instance      = new $processorFQCN();
-            if($args) {
-                $instance->setArgs($args);
+        if (isset(Constants::$buildinValidators[$validatorKey])) {
+            $validatorClass    = Constants::$buildinValidators[$validatorKey];
+            $validatorInstance = new $validatorClass();
+            if($args !== null) {
+                $validatorInstance->setArgs($args);
             }
-        } elseif (isset(Validators::$buildinValidators[$customObjectFqcnParameter])) {
-            $processorFQCN = Validators::$buildinValidators[$customObjectFqcnParameter];
-            $instance      = new $processorFQCN($args);
         }
 
-        if ($instance) {
-            $cachedInctances->set($info, $instance);
+        if ($validatorInstance) {
+            $cachedInctances->set($info, $validatorInstance);
             $cachedArgs->set($info, $args);
-            return [$instance, $args];
+            return [$validatorInstance, $args];
         }
 
         if (is_callable($info)) {

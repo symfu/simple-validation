@@ -1,24 +1,18 @@
 <?php
-
 namespace Symfu\SimpleValidation;
 
-// <editor-fold defaultstate="collapsed" desc="use namespaces">
-use Symfu\SimpleValidation\Constants;
-use Symfu\SimpleValidation\Validators;
-use Symfu\SimpleValidation\Helper\Utils;
-use Symfu\SimpleValidation\Registry;
-
-// </editor-fold>
-
-class ValidatorManager {
+class ValidationManager {
     private $jsRules = null;
 
     public function __construct() {
     }
 
-    public function register($validatorName, $callable) {
+    public function register($validatorName, $validator) {
+        if(($validator instanceof ValidatorInterface) || !is_callable($validator)) {
+            throw new \InvalidArgumentException('Argument for $validator must be an instance of ValidatorInterface or a callable');
+        }
         $registry = Registry::getRegistry(Constants::CUSTOM_VALIDATORS);
-        $registry->set($validatorName, $callable);
+        $registry->set($validatorName, $validator);
     }
 
     public function validate($formValues, $fieldDefinitions) {
@@ -27,8 +21,11 @@ class ValidatorManager {
 
         foreach ($fieldDefinitions as $fieldName => $fieldDef) {
             $value = isset($formValues[$fieldName]) ? $formValues[$fieldName] : null;
-            list($validators, $_) = $fieldDef;
+            list($validators) = $fieldDef;
             if ($validators) {
+                if(is_string($validators)) {
+                    $validators = preg_split('/\s*,\s*/', $validators);
+                }
                 list($fieldValid, $errorMessage) = $this->validateField($formValues, $fieldName, $value, $validators);
                 if (!$fieldValid) {
                     $allValid           = false;
@@ -47,7 +44,6 @@ class ValidatorManager {
         foreach ($validators as $validatorInfo) {
             list($validator, $validatorArgs) = Utils::parseValidator($validatorInfo);
 
-            $succeed = false;
             if (is_callable($validator)) {
                 list($succeed, $errorMessage) = call_user_func($validator, $fieldName, $value, $formValues, $validatorArgs);
             } elseif ($validator instanceOf ValidatorInterface) {

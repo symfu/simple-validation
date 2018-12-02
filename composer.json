@@ -16,7 +16,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "SimpleRecord\\Test\\": "tests"
+      "Symfu\\SimpleValidation\\Test\\": "tests"
     }
-
+  }
 }

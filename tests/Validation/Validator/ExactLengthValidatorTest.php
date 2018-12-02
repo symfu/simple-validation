@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\ExactLengthValidator;
 
 
-class ExactLengthValidatorTest extends ValidatorTestCase {
+class ExactLengthValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new ExactLengthValidator('9');
 

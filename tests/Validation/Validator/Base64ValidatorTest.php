@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\Base64Validator;
 
 
-class Base64ValidatorTest extends ValidatorTestCase {
+class Base64ValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new Base64Validator();
 

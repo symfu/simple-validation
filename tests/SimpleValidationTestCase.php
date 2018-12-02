@@ -1,7 +1,7 @@
 <?php
 namespace Symfu\SimpleValidation\Test;
 
-class ValidatorTestCase extends \PHPUnit_Framework_TestCase
+class SimpleValidationTestCase extends \PHPUnit\Framework\TestCase
 {
     public function setUp()
     {

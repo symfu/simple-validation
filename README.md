@@ -26,7 +26,7 @@ class DemoController extends Controller
         $fieldDefs = [
             // Field definition: [<field_name> => [validators]]
             //   field_name:      field name
-            //   validators:      validatorManager info, can be a string, array or null. null is treated as empty array
+            //   validators:      validationManager info, can be a string, array or null. null is treated as empty array
 
             'username',   ['required, alpha_dash, min_length[5], max_length[20], regex[/[a-z0-9_-]/]'],
             'nickname',   ['required, alpha, min_length[5], max_length[20]'],

@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\MinValidator;
 
 
-class GreaterThanValidatorTest extends ValidatorTestCase {
+class GreaterThanValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         // valid
         $validator = new MinValidator('98');

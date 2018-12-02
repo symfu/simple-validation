@@ -1,12 +1,12 @@
 <?php
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\DigitValidator;
 use Symfu\SimpleValidation\Validator\NaturalValidator;
 
 
-class DigitValidatorTest extends ValidatorTestCase
+class DigitValidatorTest extends SimpleValidationTestCase
 {
     public function testValidate()
     {

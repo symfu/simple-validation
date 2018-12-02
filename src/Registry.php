@@ -10,7 +10,7 @@ class Registry
     /**
      * Parameter storage.
      */
-    protected $parameters;
+    protected $parameters = [];
 
     private static $instances = [];
 

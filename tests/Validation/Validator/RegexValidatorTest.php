@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\RegexValidator;
 
 
-class RegexValidatorTest extends ValidatorTestCase {
+class RegexValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         // valid
         $validator = new RegexValidator();

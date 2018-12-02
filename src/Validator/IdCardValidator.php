@@ -12,7 +12,7 @@ class IdCardValidator extends RegexValidator {
 
     public function validate($fieldName, $value, $formValues = []) {
         $isValid = self::isValid($value);
-        return [$isValid, static::message];
+        return [$isValid, $isValid ? '' : static::message];
     }
 
     /**

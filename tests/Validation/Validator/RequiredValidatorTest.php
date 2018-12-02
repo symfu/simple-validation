@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\RequiredValidator;
 
 
-class RequiredValidatorTest extends ValidatorTestCase {
+class RequiredValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new RequiredValidator();
 
@@ -39,10 +39,10 @@ class RequiredValidatorTest extends ValidatorTestCase {
         $result = $validator->validate('dummy', '');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate(null);
+        $result = $validator->validate('dummy', null);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate(false);
+        $result = $validator->validate('dummy', false);
         $this->assertEquals($result, $invalid);
     }
 }

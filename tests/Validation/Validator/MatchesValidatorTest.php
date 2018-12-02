@@ -2,11 +2,11 @@
 
 namespace Symfu\SimpleValidation\Test\Validator;
 
-use Symfu\SimpleValidation\Test\ValidatorTestCase;
+use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\MatchesValidator;
 
 
-class MatchesValidatorTest extends ValidatorTestCase {
+class MatchesValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $password = uniqid('test_password_', true);
 
@@ -18,25 +18,19 @@ class MatchesValidatorTest extends ValidatorTestCase {
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate($formValues['password_confirm'], $formValues);
+        $result = $validator->validate('password', $formValues['password_confirm'], $formValues);
         $this->assertEquals($result, $valid);
 
         // invalid
         $formValues['password_confirm'] = uniqid('no-matched-confirm-password_', true);
-        $result                         = $validator->validate($formValues['password_confirm'], $formValues);
+        $result                         = $validator->validate('password', $formValues['password_confirm'], $formValues);
         $this->assertEquals($result, $invalid);
 
-        try {
             // test 3
-            $validator = new MatchesValidator('non-existance-field');
+        $validator = new MatchesValidator('non-existance-field');
 
-            $formValues['password_confirm'] = uniqid('no-matched-confirm-password_', true);
-            $result                         = $validator->validate($formValues['password_confirm'], $formValues);
-            $this->assertEquals($result, $valid);
-        } catch (\PHPUnit_Framework_Error_Warning $ex) {
-            return;
-        }
-
-        $this->fail('Test 3 shoud raise an E_USER_WARNING error.');
+        $formValues['password_confirm'] = uniqid('no-matched-confirm-password_', true);
+        $result                         = $validator->validate('password', $formValues['password_confirm'], $formValues);
+        $this->assertEquals($result, $invalid);
     }
 }
