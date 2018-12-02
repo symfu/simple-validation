@@ -1,0 +1,22 @@
+{
+  "name": "symfu/simple-validation",
+  "type": "library",
+  "description": "A simple and easy to use validation component",
+  "keywords": ["symfony", "validation"],
+  "homepage": "http://github.com/symfu/simple-validation",
+  "license": "GPL",
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "7.4"
+  },
+  "autoload": {
+    "psr-4": { "Symfu\\SimpleValidation\\": "src" }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SimpleRecord\\Test\\": "tests"
+    }
+
+}
