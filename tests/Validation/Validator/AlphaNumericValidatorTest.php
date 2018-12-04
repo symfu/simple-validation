@@ -2,13 +2,13 @@
 namespace Symfu\SimpleValidation\Test\Validator;
 
 use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
-use Symfu\SimpleValidation\Validator\AlphaNumericValidator;
+use Symfu\SimpleValidation\Validator\AlphaNumValidator;
 
 class AlphaNumericValidatorTest extends SimpleValidationTestCase
 {
     public function testValidate()
     {
-        $validator = new AlphaNumericValidator();
+        $validator = new AlphaNumValidator();
 
         $valid = [true, ''];
         $invalid = [false, $validator::message];

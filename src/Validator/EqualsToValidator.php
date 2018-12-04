@@ -3,10 +3,9 @@ namespace Symfu\SimpleValidation\Validator;
 
 use Symfu\SimpleValidation\ValidatorInterface;
 
-class MaxLengthValidator implements ValidatorInterface {
-    const message = 'simple_validation.errors.max_length';
-
-    protected $maxLength;
+class EqualsToValidator implements ValidatorInterface {
+    const message = 'simple_validation.errors.equals_to';
+    protected $targetField;
 
     public function __construct($arg = null) {
         if($arg) {
@@ -15,23 +14,23 @@ class MaxLengthValidator implements ValidatorInterface {
     }
 
     public function validate($fieldName, $value, $formValues = []) {
-        $valueLength = function_exists('mb_strlen') ? mb_strlen($value) : strlen($value);
-        if ($valueLength > $this->maxLength) {
+        $matchField = $this->targetField;
+        if (!$matchField || !isset($formValues[$matchField]) || ($value !== $formValues[$matchField])) {
             return [false, self::message];
         }
 
         return [true, ''];
     }
 
-    public function setArgument($maxLength) {
-        if (strlen($maxLength) < 1 || preg_match('/[^0-9]/', $maxLength)) {
+    public function setArgument($targetField) {
+        if (strlen($targetField) < 1) {
             throw new \InvalidArgumentException("Invalid argument for " . static::class);
         }
 
-        $this->maxLength = (int)$maxLength;
+        $this->targetField = $targetField;
     }
 
     public function toJQueryValidateRule() {
-        return ['maxlength' => $this->maxLength];
+        return ['equalTo' => $this->targetField];
     }
 }

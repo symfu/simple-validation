@@ -1,22 +1,18 @@
 <?php
 namespace Symfu\SimpleValidation\Validator;
 
-class DateTimeValidator extends RegexValidator
-{
+use Symfu\SimpleValidation\ValidatorInterface;
+
+class DateTimeValidator implements ValidatorInterface {
     const message = 'simple_validation.errors.date_time';
 
-    public function __construct()
-    {
-        $this->args = '/^\d\d\d\d[-\/\.]\d\d[-\/\.]\d\d\s+\d\d:\d\d:\d\d$/i';
+    public function validate($fieldName, $value, $formValues = []) {
+        return strtotime($value) ? [true, ''] : [false, self::message];
     }
 
-    public function validate($fieldName, $value, $formValues = [])
-    {
-        return parent::validate($fieldName, $value, $formValues);
-    }
+    public function setArgument($arg) {}
 
-    public function toJQueryValidateRule()
-    {
-        return array('date' => true, 'regex' => $this->args);
+    public function toJQueryValidateRule() {
+        return ['date' => true];
     }
 }

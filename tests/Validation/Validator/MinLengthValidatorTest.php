@@ -45,38 +45,16 @@ class MinLengthValidatorTest extends SimpleValidationTestCase {
     }
 
     /**
-     * @expectedException \PHPUnit\Framework\Error\Warning
-     */
-    public function testValidateFailed_1() {
-        $validator = new MinLengthValidator('');
-        $valid   = [true, ''];
-        $invalid = [false, $validator::message];
-
-        $result    = $validator->validate('dummy', '6chars');
-        $this->assertEquals($result, $invalid);
-    }
-
-    /**
-     * @expectedException \PHPUnit\Framework\Error\Warning
+     * @expectedException \InvalidArgumentException
      */
     public function testValidateFailed_2() {
         $validator = new MinLengthValidator('a123');
-        $valid   = [true, ''];
-        $invalid = [false, $validator::message];
-
-        $result    = $validator->validate('dummy', '6chars');
-        $this->assertEquals($result, $invalid);
     }
 
     /**
-     * @expectedException \PHPUnit\Framework\Error\Warning
+     * @expectedException \InvalidArgumentException
      */
     public function testValidateFailed_3() {
         $validator = new MinLengthValidator('23*');
-        $valid   = [true, ''];
-        $invalid = [false, $validator::message];
-
-        $result    = $validator->validate('dummy', '6chars');
-        $this->assertEquals($result, $invalid);
     }
 }

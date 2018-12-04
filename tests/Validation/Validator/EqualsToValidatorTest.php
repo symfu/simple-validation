@@ -3,16 +3,16 @@
 namespace Symfu\SimpleValidation\Test\Validator;
 
 use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
-use Symfu\SimpleValidation\Validator\MatchesValidator;
+use Symfu\SimpleValidation\Validator\EqualsToValidator;
 
 
-class MatchesValidatorTest extends SimpleValidationTestCase {
+class EqualsToValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $password = uniqid('test_password_', true);
 
         $formValues = ['password' => $password, 'password_confirm' => $password];
 
-        $validator = new MatchesValidator('password');
+        $validator = new EqualsToValidator('password');
 
         $valid   = [true, ''];
         $invalid = [false, $validator::message];
@@ -27,7 +27,7 @@ class MatchesValidatorTest extends SimpleValidationTestCase {
         $this->assertEquals($result, $invalid);
 
             // test 3
-        $validator = new MatchesValidator('non-existance-field');
+        $validator = new EqualsToValidator('non-existance-field');
 
         $formValues['password_confirm'] = uniqid('no-matched-confirm-password_', true);
         $result                         = $validator->validate('password', $formValues['password_confirm'], $formValues);

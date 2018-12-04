@@ -1,14 +1,11 @@
 <?php
 namespace Symfu\SimpleValidation\Validator;
 
-class IdCardValidator extends RegexValidator {
+use Symfu\SimpleValidation\ValidatorInterface;
+
+class IdCardValidator implements ValidatorInterface {
 
     const message = 'simple_validation.errors.id_card';
-
-    public function __construct($args = '') {
-        parent::__construct($args);
-        $this->args = $this->jsPattern = '/^\d{18}$/';
-    }
 
     public function validate($fieldName, $value, $formValues = []) {
         $isValid = self::isValid($value);
@@ -57,5 +54,13 @@ class IdCardValidator extends RegexValidator {
         }
 
         return (string)$last_check_code[$Y] === $check;
+    }
+
+    public function setArgument($arg) {
+
+    }
+
+    public function toJQueryValidateRule() {
+
     }
 }

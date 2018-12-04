@@ -1,44 +1,46 @@
 <?php
 namespace Symfu\SimpleValidation\Validator;
 
-class EnumValidator extends BaseValidator
-{
-    const message = 'simple_validation.errors.enum';
-    private $useArrayKeys = false;
-    public function __construct($enumValues = null, $useArrayKeys = false) {
-        parent::__construct();
-        $this->useArrayKeys = $useArrayKeys;
+use Symfu\SimpleValidation\ValidatorInterface;
 
-        $this->setArgs($enumValues);
+class EnumValidator implements ValidatorInterface {
+    const message = 'simple_validation.errors.enum';
+
+    protected $enums = [];
+    public function __construct($enumValues = null, $useArrayKeys = false) {
+        if($enumValues) {
+            $this->setArgument($enumValues, $useArrayKeys);
+        }
     }
 
-    public function validate($fieldName, $value, $formValues = [])
-    {
-        if(strlen($value) > 0 && $this->args && !in_array($value, (array)$this->args))
-        {
+    public function validate($fieldName, $value, $formValues = []) {
+        if (strlen($value) > 0 && $this->enums && !in_array($value, $this->enums)) {
             return [false, self::message];
         }
 
         return [true, ''];
     }
 
-    public function setArgs($enumValues) {
-        if(is_string($enumValues)) {
+    public function setArgument($enumValues, $useArrayKeys = false) {
+        $validEnums = null;
+        if (is_string($enumValues)) {
             $validEnums = explode("|", trim($enumValues));
-        } elseif(is_array($enumValues)) {
-            $validEnums = $this->useArrayKeys ? array_keys($enumValues) : array_values($enumValues);
-        } else {
-            $validEnums = [];
+        } elseif (is_array($enumValues)) {
+            $validEnums = $useArrayKeys ? array_keys($enumValues) : array_values($enumValues);
         }
 
-        array_walk($validEnums, function(&$v){ $v = trim($v);});
-        $validEnums = array_filter($validEnums, function($v){ return $v !== '' && $v !== null;});
+        if(!$validEnums) {
+            throw new \InvalidArgumentException("Invalid arguments for EnumValidator: " . json_encode($enumValues));
+        }
 
-        $this->args = $validEnums;
+        array_walk($validEnums, function (&$v) { $v = trim($v); });
+        $validEnums = array_filter($validEnums, function ($v) { return $v !== '' && $v !== null; });
+
+        $this->enums = $validEnums;
     }
 
-    public function toJQueryValidateRule()
-    {
-        return [];
+    public function toJQueryValidateRule() {
+        $enumStr = join('|', $this->enums);
+        return ['regex' => "/({$enumStr})/"];
     }
 }

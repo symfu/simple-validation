@@ -34,7 +34,7 @@ class ValidationManagerTest extends SimpleValidationTestCase {
             'last_name'  => ['required, alpha, min_length[2], max_length[20]'],
             'email'      => ['required, email'],
             'password1'  => ['required, min_length[6], max_length[100]'],
-            'password2'  => ['required, min_length[6], max_length[100], matches[password1]'],
+            'password2'  => ['required, min_length[6], max_length[100], equals_to[password1]'],
         ];
 
         // valid
@@ -70,6 +70,6 @@ class ValidationManagerTest extends SimpleValidationTestCase {
         $this->assertEquals('simple_validation.errors.min_length', $errors['first_name']);
         $this->assertEquals('simple_validation.errors.max_length', $errors['last_name']);
         $this->assertEquals('simple_validation.errors.email', $errors['email']);
-        $this->assertEquals('simple_validation.errors.matches', $errors['password2']);
+        $this->assertEquals('simple_validation.errors.equals_to', $errors['password2']);
     }
 }
