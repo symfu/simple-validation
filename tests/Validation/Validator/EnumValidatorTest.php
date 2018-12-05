@@ -11,42 +11,42 @@ class EnumValidatorTest extends SimpleValidationTestCase {
         $valid   = [true, ''];
         $invalid = [false, EnumValidator::message];
 
-
-        $validator = new EnumValidator('A|B|c');
+        $enumLiteral = 'A|B|c';
+        $validator = new EnumValidator();
 
         // valid
-        $result = $validator->validate('dummy', 'A');
+        $result = $validator->validate('A', $enumLiteral);
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', 'B');
+        $result = $validator->validate('B', $enumLiteral);
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', 'c');
+        $result = $validator->validate('c', $enumLiteral);
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', ' ');
+        $result = $validator->validate(' ', $enumLiteral);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '0');
+        $result = $validator->validate('0', $enumLiteral);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', 'a');
+        $result = $validator->validate('a', $enumLiteral);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', 'b');
+        $result = $validator->validate('b', $enumLiteral);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', 'C');
+        $result = $validator->validate('C', $enumLiteral);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', 'D');
+        $result = $validator->validate('D', $enumLiteral);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', 'FD');
+        $result = $validator->validate('FD', $enumLiteral);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '*');
+        $result = $validator->validate('*', $enumLiteral);
         $this->assertEquals($result, $invalid);
     }
 }

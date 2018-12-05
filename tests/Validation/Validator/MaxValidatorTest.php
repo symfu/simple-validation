@@ -8,22 +8,47 @@ use Symfu\SimpleValidation\Validator\MaxValidator;
 
 class MaxValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
-        // valid
-        $validator = new MaxValidator('99');
+        $validator = new MaxValidator();
 
         $valid   = [true, ''];
         $invalid = [false, $validator::message];
 
-        $result = $validator->validate('dummy', '98');
+        // valid
+        $result = $validator->validate('98', '98');
         $this->assertEquals($result, $valid);
 
-        $validator = new MaxValidator('100');
-        $result    = $validator->validate('dummy', '99');
+        $result = $validator->validate('98', '99');
+        $this->assertEquals($result, $valid);
+
+        $result = $validator->validate('98', '100');
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('98.000', '98.001');
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('0.0000', '0.0000');
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('-1.001', '-1.0001');
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('0.0000', '0.0001');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $validator = new MaxValidator('15');
-        $result    = $validator->validate('dummy', '20');
+        $result    = $validator->validate('99', '89');
+        $this->assertEquals($result, $invalid);
+
+        $result    = $validator->validate('99', '89.99999999');
+        $this->assertEquals($result, $invalid);
+
+        $result    = $validator->validate('20', '15');
+        $this->assertEquals($result, $invalid);
+
+        $result    = $validator->validate('-1', '-2');
+        $this->assertEquals($result, $invalid);
+
+        $result    = $validator->validate('-1.0001', '-1.0002');
         $this->assertEquals($result, $invalid);
     }
 }

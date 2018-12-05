@@ -3,12 +3,13 @@ namespace Symfu\SimpleValidation\Validator;
 
 class DateValidator extends RegexValidator {
     const message = 'simple_validation.errors.date';
+    const PATTERN = '/^\d\d\d\d[-\/\.]\d\d[-\/\.]\d\d$/';
 
-    public function __construct() {
-        $this->pattern = '/^\d\d\d\d[-\/\.]\d\d[-\/\.]\d\d$/';
+    public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
+        return parent::validate($value, self::PATTERN, $fieldName, $formValues);
     }
 
-    public function toJQueryValidateRule() {
-        return ['date' => true, 'regex' => $this->pattern];
+    public function toJQueryValidateRule($argument) {
+        return ['regex' => self::PATTERN];
     }
 }

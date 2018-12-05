@@ -6,32 +6,20 @@ use Symfu\SimpleValidation\ValidatorInterface;
 class MaxLengthValidator implements ValidatorInterface {
     const message = 'simple_validation.errors.max_length';
 
-    protected $maxLength;
-
-    public function __construct($arg = null) {
-        if($arg) {
-            $this->setArgument($arg);
+    public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
+        if(!preg_match('/^\d+$/', $argument)) {
+            throw new \InvalidArgumentException('Invalid argument for ' . self::class);
         }
-    }
 
-    public function validate($fieldName, $value, $formValues = []) {
         $valueLength = function_exists('mb_strlen') ? mb_strlen($value) : strlen($value);
-        if ($valueLength > $this->maxLength) {
+        if ($valueLength === 0 || $valueLength <= (int)$argument) {
+            return [true, ''];
+        } else {
             return [false, self::message];
         }
-
-        return [true, ''];
     }
 
-    public function setArgument($maxLength) {
-        if (strlen($maxLength) < 1 || preg_match('/[^0-9]/', $maxLength)) {
-            throw new \InvalidArgumentException("Invalid argument for " . static::class);
-        }
-
-        $this->maxLength = (int)$maxLength;
-    }
-
-    public function toJQueryValidateRule() {
-        return ['maxlength' => $this->maxLength];
+    public function toJQueryValidateRule($argument) {
+        return ['maxlength' => (int)$argument];
     }
 }

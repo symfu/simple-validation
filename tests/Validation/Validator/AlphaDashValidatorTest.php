@@ -14,17 +14,17 @@ class AlphaDashValidatorTest extends SimpleValidationTestCase
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', '_abcdefhijklmno_01234-pqrstuvwxyz_56789');
+        $result = $validator->validate('_abcdefhijklmno_01234-pqrstuvwxyz_56789');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', '.abcde');
+        $result = $validator->validate('.abcde');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', 'abc de');
+        $result = $validator->validate('abc de');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', './*+~!@#$%^&*abcdefhijklmno_01234-pqrstuvwxyz_56789');
+        $result = $validator->validate('./*+~!@#$%^&*abcdefhijklmno_01234-pqrstuvwxyz_56789');
         $this->assertEquals($result, $invalid);
     }
 }

@@ -6,27 +6,22 @@ use Symfu\SimpleValidation\ValidatorInterface;
 class EnumValidator implements ValidatorInterface {
     const message = 'simple_validation.errors.enum';
 
-    protected $enums = [];
-    public function __construct($enumValues = null, $useArrayKeys = false) {
-        if($enumValues) {
-            $this->setArgument($enumValues, $useArrayKeys);
-        }
-    }
+    public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
+        $enums = $this->parse($argument);
 
-    public function validate($fieldName, $value, $formValues = []) {
-        if (strlen($value) > 0 && $this->enums && !in_array($value, $this->enums)) {
+        if (in_array($value, $enums)) {
+            return [true, ''];
+        } else {
             return [false, self::message];
         }
-
-        return [true, ''];
     }
 
-    public function setArgument($enumValues, $useArrayKeys = false) {
+    protected function parse($enumValues) {
         $validEnums = null;
         if (is_string($enumValues)) {
             $validEnums = explode("|", trim($enumValues));
         } elseif (is_array($enumValues)) {
-            $validEnums = $useArrayKeys ? array_keys($enumValues) : array_values($enumValues);
+            $validEnums = array_values($enumValues);
         }
 
         if(!$validEnums) {
@@ -36,11 +31,10 @@ class EnumValidator implements ValidatorInterface {
         array_walk($validEnums, function (&$v) { $v = trim($v); });
         $validEnums = array_filter($validEnums, function ($v) { return $v !== '' && $v !== null; });
 
-        $this->enums = $validEnums;
+        return $validEnums;
     }
 
-    public function toJQueryValidateRule() {
-        $enumStr = join('|', $this->enums);
-        return ['regex' => "/({$enumStr})/"];
+    public function toJQueryValidateRule($argument) {
+        return ['regex' => "/({$argument})/"];
     }
 }

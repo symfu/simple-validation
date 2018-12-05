@@ -14,26 +14,26 @@ class DateValidatorTest extends SimpleValidationTestCase {
         $invalid = [false, $validator::message];
 
         // invaid tests
-        $result = $validator->validate('dummy', '2012-12-12');
+        $result = $validator->validate('2012-12-12');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '2012/12/12');
+        $result = $validator->validate('2012/12/12');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '2012.12.12');
+        $result = $validator->validate('2012.12.12');
         $this->assertEquals($result, $valid);
 
         // ininvaid tests
-        $result = $validator->validate('dummy', '2012-12-aa');
+        $result = $validator->validate('2012-12-aa');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '2012/!2/12');
+        $result = $validator->validate('2012/!2/12');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '201o.12.12');
+        $result = $validator->validate('201o.12.12');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', './*+~!@#$%^&*abcdefhijklmno_01234-pqrstuvwxyz_56789');
+        $result = $validator->validate('./*+~!@#$%^&*abcdefhijklmno_01234-pqrstuvwxyz_56789');
         $this->assertEquals($result, $invalid);
     }
 }

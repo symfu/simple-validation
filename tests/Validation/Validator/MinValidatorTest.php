@@ -6,23 +6,49 @@ use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
 use Symfu\SimpleValidation\Validator\MinValidator;
 
 
-class GreaterThanValidatorTest extends SimpleValidationTestCase {
+class MinValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
-        // valid
-        $validator = new MinValidator('98');
+        $validator = new MinValidator();
 
         $valid   = [true, ''];
         $invalid = [false, $validator::message];
 
-        $result = $validator->validate('dummy', '99');
+        // valid
+        $result = $validator->validate('99', 98);
         $this->assertEquals($result, $valid);
-        $validator = new MinValidator('99');
-        $result    = $validator->validate('dummy', '100');
+
+        $result    = $validator->validate('100', 99);
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('100', 100);
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('0.000000000001', 0);
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('0', -0.000000001);
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('-1', -1.0000000001);
+        $this->assertEquals($result, $valid);
+
+        $result    = $validator->validate('-1', -2);
         $this->assertEquals($result, $valid);
 
         // invalid
-        $validator = new MinValidator('20');
-        $result    = $validator->validate('dummy', '15');
+        $result    = $validator->validate('100', 101);
+        $this->assertEquals($result, $invalid);
+
+        $result    = $validator->validate('15', '20');
+        $this->assertEquals($result, $invalid);
+
+        $result    = $validator->validate('-1', '-0.99999999999');
+        $this->assertEquals($result, $invalid);
+
+        $result    = $validator->validate('-1', '0');
+        $this->assertEquals($result, $invalid);
+
+        $result    = $validator->validate('0', '0.0000000001');
         $this->assertEquals($result, $invalid);
     }
 }

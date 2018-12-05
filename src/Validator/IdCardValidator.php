@@ -7,7 +7,7 @@ class IdCardValidator implements ValidatorInterface {
 
     const message = 'simple_validation.errors.id_card';
 
-    public function validate($fieldName, $value, $formValues = []) {
+    public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
         $isValid = self::isValid($value);
         return [$isValid, $isValid ? '' : static::message];
     }
@@ -56,11 +56,7 @@ class IdCardValidator implements ValidatorInterface {
         return (string)$last_check_code[$Y] === $check;
     }
 
-    public function setArgument($arg) {
-
-    }
-
-    public function toJQueryValidateRule() {
-
+    public function toJQueryValidateRule($argument) {
+        return null;
     }
 }

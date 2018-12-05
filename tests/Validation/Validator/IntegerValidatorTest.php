@@ -14,23 +14,23 @@ class IntegerValidatorTest extends SimpleValidationTestCase {
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', '012346789');
+        $result = $validator->validate('012346789');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '-012346789');
+        $result = $validator->validate('-012346789');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '+012346789');
+        $result = $validator->validate('+012346789');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', '0.123456789');
+        $result = $validator->validate('0.123456789');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '12345.67890');
+        $result = $validator->validate('12345.67890');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '1234567890a');
+        $result = $validator->validate('1234567890a');
         $this->assertEquals($result, $invalid);
     }
 }

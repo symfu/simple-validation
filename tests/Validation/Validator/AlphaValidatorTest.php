@@ -14,10 +14,10 @@ class AlphaValidatorTest extends SimpleValidationTestCase {
         $invalid = [false, $validator::message];
 
         // tests
-        $result = $validator->validate('dummy', 'abcdefhijklmnopqrstuvwxyz');
+        $result = $validator->validate('abcdefhijklmnopqrstuvwxyz');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', 'abcdefhijklmnopqrstuvwxyz0123456789');
+        $result = $validator->validate('abcdefhijklmnopqrstuvwxyz0123456789');
         $this->assertEquals($result, $invalid);
     }
 }

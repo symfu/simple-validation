@@ -6,17 +6,15 @@ use Symfu\SimpleValidation\ValidatorInterface;
 class NumericValidator implements ValidatorInterface {
     const message = 'simple_validation.errors.numeric';
 
-    public function validate($fieldName, $value, $formValues = []) {
-        if (strlen($value) < 1 || is_numeric($value)) {
+    public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
+        if (strlen($value) === 0 || is_numeric($value)) {
             return [true, ''];
         } else {
             return [false, self::message];
         }
     }
 
-    public function toJQueryValidateRule() {
+    public function toJQueryValidateRule($argument) {
         return ['number' => true];
     }
-
-    public function setArgument($arg) { }
 }

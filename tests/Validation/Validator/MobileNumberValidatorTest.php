@@ -15,26 +15,26 @@ class MobileNumberValidatorTest extends SimpleValidationTestCase {
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', '13978988413');
+        $result = $validator->validate('13978988413');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '15070923728');
+        $result = $validator->validate('15070923728');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', '0');
+        $result = $validator->validate('0');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '-1');
+        $result = $validator->validate('-1');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '12345679');
+        $result = $validator->validate('12345679');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '188123456789');
+        $result = $validator->validate('188123456789');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '1881234567');
+        $result = $validator->validate('1881234567');
         $this->assertEquals($result, $invalid);
     }
 }

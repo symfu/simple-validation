@@ -5,33 +5,20 @@ use Symfu\SimpleValidation\ValidatorInterface;
 
 class MinValidator implements ValidatorInterface {
     const message = 'simple_validation.errors.min';
-    protected $minValue = null;
 
-    public function __construct($arg = null) {
-        if($arg) {
-            $this->setArgument($arg);
+    public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
+        if(!is_numeric($argument)) {
+            throw new \InvalidArgumentException('Invalid argument for ' . self::class);
         }
-    }
 
-    public function validate($fieldName, $value, $formValues = []) {
-        if (strlen($value) > 0 && $value < $this->minValue) {
+        if ((float)$value >= (float)$argument) {
+            return [true, ''];
+        } else {
             return [false, self::message];
         }
-
-        return [true, ''];
     }
 
-    public function setArgument($minValue) {
-        if (strlen($minValue) < 1 || preg_match('/[^0-9]/', $minValue)) {
-            throw new \InvalidArgumentException("Invalid argument for " . static::class);
-        }
-
-        $this->minValue = (int)$minValue;
-    }
-
-    public function toJQueryValidateRule() {
-        $len = (int)$this->minValue;
-
-        return ['min' => $len];
+    public function toJQueryValidateRule($argument) {
+        return ['min' => (int)$argument];
     }
 }

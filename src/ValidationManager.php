@@ -9,7 +9,7 @@ class ValidationManager {
 
     public function register($validatorName, $validator) {
         if(($validator instanceof ValidatorInterface) || !is_callable($validator)) {
-            throw new \InvalidArgumentException('Argument for $validator must be an instance of ValidatorInterface or a callable');
+            throw new \InvalidArgumentException('Argument for $validatorMgr must be an instance of ValidatorInterface or a callable');
         }
         $registry = Registry::getRegistry(Constants::CUSTOM_VALIDATORS);
         $registry->set($validatorName, $validator);
@@ -21,12 +21,12 @@ class ValidationManager {
 
         foreach ($fieldDefinitions as $fieldName => $fieldDef) {
             $value = isset($formValues[$fieldName]) ? $formValues[$fieldName] : null;
-            list($validators) = $fieldDef;
-            if ($validators) {
-                if(is_string($validators)) {
-                    $validators = preg_split('/\s*,\s*/', $validators);
+            list($validatorLiterals) = $fieldDef;
+            if ($validatorLiterals) {
+                if(is_string($validatorLiterals)) {
+                    $validatorLiterals = preg_split('/\s*,\s*/', $validatorLiterals);
                 }
-                list($fieldValid, $errorMessage) = $this->validateField($formValues, $fieldName, $value, $validators);
+                list($fieldValid, $errorMessage) = $this->validateField($value, $validatorLiterals, $fieldName, $formValues);
                 if (!$fieldValid) {
                     $allValid           = false;
                     $errors[$fieldName] = $errorMessage;
@@ -37,19 +37,24 @@ class ValidationManager {
         return [$allValid, $errors];
     }
 
-    private function validateField($formValues, $fieldName, $value, $validators) {
+    private function validateField($value, $validatorLiterals, $fieldName, $formValues) {
         $fieldValid   = true;
         $errorMessage = null;
 
-        foreach ($validators as $validatorInfo) {
-            list($validator, $validatorArgs) = Utils::parseValidator($validatorInfo);
+        foreach ($validatorLiterals as $validatorLiteral) {
+            // empty value should passes all validators, except RequiredValidator
+            if(strlen($value) === 0 && $validatorLiteral !== 'required') {
+                continue;
+            }
+
+            list($validator, $validatorArgs) = Utils::parseValidator($validatorLiteral);
 
             if (is_callable($validator)) {
-                list($succeed, $errorMessage) = call_user_func($validator, $fieldName, $value, $formValues, $validatorArgs);
+                list($succeed, $errorMessage) = call_user_func($validator, $value, $validatorArgs, $fieldName, $formValues);
             } elseif ($validator instanceOf ValidatorInterface) {
-                list($succeed, $errorMessage) = $validator->validate($fieldName, $value, $formValues);
+                list($succeed, $errorMessage) = $validator->validate($value, $validatorArgs, $fieldName, $formValues);
             } else {
-                throw new \InvalidArgumentException("Validator Info is invalid: {$validatorInfo}");
+                throw new \InvalidArgumentException("Validator Info is invalid: {$validatorLiteral}");
             }
 
             if (!$succeed) {

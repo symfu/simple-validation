@@ -7,10 +7,13 @@ class Utils {
             return [$literal, null];
         }
 
+        list($objectName, $arguments) = self::parseLiteral($literal);
+
         $cachedValidators = Registry::getRegistry(Constants::VALIDATOR_INSTANCES);
         $customValidators = Registry::getRegistry(Constants::CUSTOM_VALIDATORS);
 
-        return self::getInstance($literal, $cachedValidators, $customValidators, 'validator');
+        $validator = self::getInstance($objectName, $cachedValidators, $customValidators);
+        return [$validator, $arguments];
     }
 
     public static function parseTransformer($literal) {
@@ -18,10 +21,13 @@ class Utils {
             return [$literal, null];
         }
 
+        list($objectName, $arguments) = self::parseLiteral($literal);
+
         $cachedTransformers = Registry::getRegistry(Constants::TRANSFORMER_INSTANCES);
         $customTransformers = Registry::getRegistry(Constants::CUSTOM_TRANSFORMERS);
 
-        return self::getInstance($literal, $cachedTransformers, $customTransformers, 'transformer');
+        $validator = self::getInstance($objectName, $cachedTransformers, $customTransformers);
+        return [$validator, $arguments];
     }
 
     private static function parseLiteral($literal) {
@@ -40,47 +46,36 @@ class Utils {
     }
 
     // do some dirty works here
-    private static function getInstance($info, Registry $instanceRegistry, Registry $customRegistry, $category) {
-        list($objectName, $objectArgs) = self::parseLiteral($info);
-
-        if ($instanceRegistry->has($info)) {
-            $cachedInstance = $instanceRegistry->get($info);
-            return [$cachedInstance, $objectArgs];
+    private static function getInstance($objectName, Registry $instanceRegistry, Registry $customRegistry) {
+        if ($instanceRegistry->has($objectName)) {
+            $cachedInstance = $instanceRegistry->get($objectName);
+            return $cachedInstance;
         }
 
-        if ($customRegistry->has($info)) {
-            $customValidator = $customRegistry->get($info);
-            return [$customValidator, $objectArgs];
+        $builtinValidatorKey = "simple_validation.validator.{$objectName}.class";
+        $customValidatorKey  = "simple_validation.validator.custom.{$objectName}.class";
+        $validatorClass = isset(Constants::$builtinValidators[$builtinValidatorKey]) ? Constants::$builtinValidators[$builtinValidatorKey] : $customRegistry->get($customValidatorKey);
+        if ($validatorClass) {
+            $validatorInstance = new $validatorClass();
+            $instanceRegistry->set($objectName, $validatorInstance);
+
+            return $validatorInstance;
         }
 
-        $instance = null;
-        if ($category === 'validator') {
-            $key = "simple_validation.validator.{$objectName}.class";
-            if (isset(Constants::$builtinValidators[$key])) {
-                $class    = Constants::$builtinValidators[$key];
-                $instance = new $class();
-                if ($instance instanceof ValidatorInterface && $objectArgs !== null) {
-                    $instance->setArgument($objectArgs);
-                }
-                $instanceRegistry->set($info, $instance);
+        $builtinTransformerKey = "simple_validation.transformer.{$objectName}.class";
+        $customTransformerKey  = "simple_validation.transformer.custom.{$objectName}.class";
+        $transformerClass = isset(Constants::$builtinTransformers[$builtinTransformerKey]) ? Constants::$builtinTransformers[$builtinTransformerKey] : $customRegistry->get($customTransformerKey);
+        if ($transformerClass) {
+            $transformerInstance = new $transformerClass();
+            $instanceRegistry->set($objectName, $transformerInstance);
 
-                return [$instance, $objectArgs];
-            }
-        } elseif ($category === 'transformer') {
-            $key = "simple_validation.transformer.{$objectName}.class";
-            if (isset(Constants::$builtinTransformers[$key])) {
-                $class    = Constants::$builtinTransformers[$key];
-                $instance = new $class();
-                $instanceRegistry->set($info, $instance);
-
-                return [$instance, $objectArgs];
-            }
+            return $transformerInstance;
         }
 
-        if (is_callable($info)) {
-            return [$info, null];
+        if (is_callable($objectName)) {
+            return $objectName;
         }
 
-        return [null, null];
+        return null;
     }
 }

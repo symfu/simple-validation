@@ -11,21 +11,21 @@ class RegexValidatorTest extends SimpleValidationTestCase {
         $valid   = [true, ''];
         $invalid = [false, RegexValidator::message];
 
-        $validator = new RegexValidator('/[a-z]+/');
-        $result    = $validator->validate('dummy', 'abcdefghijklmnopqrstuvwxyz');
+        $validator = new RegexValidator();
+        $result    = $validator->validate('abcdefghijklmnopqrstuvwxyz', '/[a-z]+/');
         $this->assertEquals($result, $valid);
 
-        $validator = new RegexValidator('/[0-9]+/');
-        $result    = $validator->validate('dummy', '0123456789');
+        $validator = new RegexValidator();
+        $result    = $validator->validate('0123456789', '/[0-9]+/');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $validator = new RegexValidator('/[a-z]+/');
-        $result    = $validator->validate('dummy', '0123456789');
+        $validator = new RegexValidator();
+        $result    = $validator->validate('0123456789', '/[a-z]+/');
         $this->assertEquals($result, $invalid);
 
-        $validator = new RegexValidator('/[a-z]+/');
-        $result    = $validator->validate('dummy', '!@#$');
+        $validator = new RegexValidator();
+        $result    = $validator->validate('!@#$', '/[a-z]+/');
         $this->assertEquals($result, $invalid);
     }
 }

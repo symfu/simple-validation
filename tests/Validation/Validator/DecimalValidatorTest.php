@@ -14,32 +14,32 @@ class DecimalValidatorTest extends SimpleValidationTestCase {
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', '1234567890.1234');
+        $result = $validator->validate('1234567890.1234');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '-1234567890.1234');
+        $result = $validator->validate('-1234567890.1234');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '+1234567890.1234');
+        $result = $validator->validate('+1234567890.1234');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '1234567890');
+        $result = $validator->validate('1234567890');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', '1234567890.1234.45');
+        $result = $validator->validate('1234567890.1234.45');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', 'a1234567890.1234');
+        $result = $validator->validate('a1234567890.1234');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '1234567890.1234a');
+        $result = $validator->validate('1234567890.1234a');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '123456-7890.1234');
+        $result = $validator->validate('123456-7890.1234');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '1234_567890.1234');
+        $result = $validator->validate('1234_567890.1234');
         $this->assertEquals($result, $invalid);
     }
 }

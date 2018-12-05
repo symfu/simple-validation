@@ -8,35 +8,38 @@ use Symfu\SimpleValidation\Validator\ExactLengthValidator;
 
 class ExactLengthValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
-        $validator = new ExactLengthValidator('9');
+        $validator = new ExactLengthValidator();
 
         $valid   = [true, ''];
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', '123456789');
+        $result = $validator->validate('', '9');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', 'abcdefghi');
+        $result = $validator->validate('123456789', '9');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '不多不少正好九个字');
+        $result = $validator->validate('abcdefghi', '9');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '中英混合words');
+        $result = $validator->validate('不多不少正好九个字', '9');
+        $this->assertEquals($result, $valid);
+
+        $result = $validator->validate('中英混合words', '9');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', '12345678');
+        $result = $validator->validate('12345678', '9');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '123456789_');
+        $result = $validator->validate('123456789_', '9');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '不到九个字.');
+        $result = $validator->validate('不到九个字.', '9');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '这肯定超过九个字了吧？？');
+        $result = $validator->validate('这肯定超过九个字了吧？？', '9');
         $this->assertEquals($result, $invalid);
     }
 }

@@ -14,17 +14,17 @@ class Base64ValidatorTest extends SimpleValidationTestCase {
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', 'ZnVjayBjcGMhIQo=');
+        $result = $validator->validate('ZnVjayBjcGMhIQo=');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '5Zyf5YWx5b+F5LqhCg==');
+        $result = $validator->validate('5Zyf5YWx5b+F5LqhCg==');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', '!@#');
+        $result = $validator->validate('!@#');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '$%^&*');
+        $result = $validator->validate('$%^&*');
         $this->assertEquals($result, $invalid);
     }
 }

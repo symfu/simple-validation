@@ -16,35 +16,35 @@ class DigitValidatorTest extends SimpleValidationTestCase
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', '1');
+        $result = $validator->validate('1');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '0');
+        $result = $validator->validate('0');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '0123456789');
+        $result = $validator->validate('0123456789');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '12345678900');
+        $result = $validator->validate('12345678900');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', 'abc');
+        $result = $validator->validate('abc');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '-1');
+        $result = $validator->validate('-1');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '-12345679');
+        $result = $validator->validate('-12345679');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '+12345679');
+        $result = $validator->validate('+12345679');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '12345.67890');
+        $result = $validator->validate('12345.67890');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', '1234567890a');
+        $result = $validator->validate('1234567890a');
         $this->assertEquals($result, $invalid);
     }
 }

@@ -3,7 +3,6 @@ namespace Symfu\SimpleValidation;
 
 interface ValidatorInterface
 {
-    public function validate($fieldName, $value, $formValues = []);
-    public function setArgument($arg);
-    public function toJQueryValidateRule();
+    public function validate($value, $argument = null, $fieldName = null, $formValues = []);
+    public function toJQueryValidateRule($argument);
 }

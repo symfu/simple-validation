@@ -6,43 +6,20 @@ use Symfu\SimpleValidation\ValidatorInterface;
 class RegexValidator implements ValidatorInterface {
     const message = 'simple_validation.errors.regex';
 
-    protected $pattern   = '';
-    protected $jsPattern = '';
-
-    public function __construct($arg = null) {
-        if($arg) {
-            $this->setArgument($arg);
-        }
-    }
-
-    public function validate($fieldName, $value, $formValues = []) {
-        if (is_string($value) && strlen($value) < 1) {
+    public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
+        if (preg_match($argument, $value)) {
             return [true, ''];
-        }
-
-        if (strlen($value) > 0 && !preg_match($this->pattern, $value)) {
+        } else {
             return [false, static::message];
         }
 
-        return [true, ''];
     }
 
-    public function toJQueryValidateRule() {
-        $jsPattern = $this->jsPattern;
-
-        if (strlen($jsPattern) < 1) {
+    public function toJQueryValidateRule($argument) {
+        if (strlen($argument) < 1) {
             return null;
         }
 
-        return ['regex' => $jsPattern];
-    }
-
-    public function setArgument($pattern) {
-        if (strlen($pattern) < 1) {
-            throw new \InvalidArgumentException("Invalid argument for " . static::class);
-        }
-
-        $this->pattern   = $pattern;
-        $this->jsPattern = $pattern;
+        return ['regex' => $argument];
     }
 }

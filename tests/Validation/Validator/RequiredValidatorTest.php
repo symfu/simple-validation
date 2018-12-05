@@ -14,35 +14,35 @@ class RequiredValidatorTest extends SimpleValidationTestCase {
         $invalid = [false, $validator::message];
 
         // valid
-        $result = $validator->validate('dummy', '0');
+        $result = $validator->validate('0');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '1');
+        $result = $validator->validate('1');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', 'str');
+        $result = $validator->validate('str');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '!@#$%');
+        $result = $validator->validate('!@#$%');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '+123456789');
+        $result = $validator->validate('+123456789');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '123456789.123456');
+        $result = $validator->validate('123456789.123456');
         $this->assertEquals($result, $valid);
 
-        $result = $validator->validate('dummy', '5.556E+9');
+        $result = $validator->validate('5.556E+9');
         $this->assertEquals($result, $valid);
 
         // invalid
-        $result = $validator->validate('dummy', '');
+        $result = $validator->validate('');
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', null);
+        $result = $validator->validate(null);
         $this->assertEquals($result, $invalid);
 
-        $result = $validator->validate('dummy', false);
+        $result = $validator->validate(false);
         $this->assertEquals($result, $invalid);
     }
 }
