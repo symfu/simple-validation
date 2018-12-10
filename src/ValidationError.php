@@ -6,7 +6,7 @@ class ValidationError {
     protected $message;     // used for translation
     protected $argument;
 
-    public function __construct($messageKey, $argument, $message = '') {
+    public function __construct($messageKey, $argument = '', $message = '') {
         $this->messageKey = $messageKey;
         $this->argument   = $argument;
         $this->message    = $message;
