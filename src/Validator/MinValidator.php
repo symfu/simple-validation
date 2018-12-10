@@ -4,7 +4,7 @@ namespace Symfu\SimpleValidation\Validator;
 use Symfu\SimpleValidation\ValidatorInterface;
 
 class MinValidator implements ValidatorInterface {
-    const message = 'simple_validation.errors.min';
+    const message = 'validation.errors.min';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
         if(!is_numeric($argument)) {
@@ -12,7 +12,7 @@ class MinValidator implements ValidatorInterface {
         }
 
         if ((float)$value >= (float)$argument) {
-            return [true, ''];
+            return [true, null];
         } else {
             return [false, self::message];
         }

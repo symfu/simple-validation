@@ -2,7 +2,7 @@
 namespace Symfu\SimpleValidation\Validator;
 
 class AlphaValidator extends RegexValidator {
-    const message = 'simple_validation.errors.alpha';
+    const message = 'validation.errors.alpha';
     const PATTERN = '/^[a-z]+$/i';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {

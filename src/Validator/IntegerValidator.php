@@ -2,7 +2,7 @@
 namespace Symfu\SimpleValidation\Validator;
 
 class IntegerValidator extends RegexValidator {
-    const message = 'simple_validation.errors.integer';
+    const message = 'validation.errors.integer';
     const PATTERN = '/^[\-+]?[0-9]+$/';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {

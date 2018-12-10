@@ -4,7 +4,7 @@ namespace Symfu\SimpleValidation\Validator;
 use Symfu\SimpleValidation\ValidatorInterface;
 
 class EqualsToValidator implements ValidatorInterface {
-    const message = 'simple_validation.errors.equals_to';
+    const message = 'validation.errors.equals_to';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
         if(!$argument || !isset($formValues[$argument])) {
@@ -12,7 +12,7 @@ class EqualsToValidator implements ValidatorInterface {
         }
 
         if ((string)$value === (string)$formValues[$argument]) {
-            return [true, ''];
+            return [true, null];
         } else {
             return [false, self::message];
         }

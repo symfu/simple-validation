@@ -2,7 +2,7 @@
 namespace Symfu\SimpleValidation\Validator;
 
 class DateValidator extends RegexValidator {
-    const message = 'simple_validation.errors.date';
+    const message = 'validation.errors.date';
     const PATTERN = '/^\d\d\d\d[-\/\.]\d\d[-\/\.]\d\d$/';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {

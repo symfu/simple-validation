@@ -4,11 +4,11 @@ namespace Symfu\SimpleValidation\Validator;
 use Symfu\SimpleValidation\ValidatorInterface;
 
 class RegexValidator implements ValidatorInterface {
-    const message = 'simple_validation.errors.regex';
+    const message = 'validation.errors.regex';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
         if (preg_match($argument, $value)) {
-            return [true, ''];
+            return [true, null];
         } else {
             return [false, static::message];
         }

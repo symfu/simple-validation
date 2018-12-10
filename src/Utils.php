@@ -13,6 +13,11 @@ class Utils {
         $customValidators = Registry::getRegistry(Constants::CUSTOM_VALIDATORS);
 
         $validator = self::getInstance($objectName, $cachedValidators, $customValidators);
+
+        if (is_callable($validator) && !($validator instanceOf ValidatorInterface)) {
+            throw new \InvalidArgumentException("Invalid validator {$objectName}");
+        }
+
         return [$validator, $arguments];
     }
 

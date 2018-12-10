@@ -5,7 +5,7 @@ use Symfu\SimpleValidation\ValidatorInterface;
 
 class IdCardValidator implements ValidatorInterface {
 
-    const message = 'simple_validation.errors.id_card';
+    const message = 'validation.errors.id_card';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
         $isValid = self::isValid($value);

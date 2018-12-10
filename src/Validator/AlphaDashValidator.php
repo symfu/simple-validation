@@ -2,7 +2,7 @@
 namespace Symfu\SimpleValidation\Validator;
 
 class AlphaDashValidator extends RegexValidator {
-    const message = 'simple_validation.errors.alpha_dash';
+    const message = 'validation.errors.alpha_dash';
     const PATTERN = '/^[a-z0-9_-]+$/i';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {

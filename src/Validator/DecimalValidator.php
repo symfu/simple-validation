@@ -2,7 +2,7 @@
 namespace Symfu\SimpleValidation\Validator;
 
 class DecimalValidator extends RegexValidator {
-    const message = 'simple_validation.errors.decimal';
+    const message = 'validation.errors.decimal';
     const PATTERN = '/^[+\-]?[0-9]+(?:[.][0-9]*)?$/';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {

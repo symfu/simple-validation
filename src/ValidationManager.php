@@ -1,6 +1,8 @@
 <?php
 namespace Symfu\SimpleValidation;
 
+use Symfu\SimpleValidation\Validator\RequiredValidator;
+
 class ValidationManager {
     private $jsRules = null;
 
@@ -26,10 +28,16 @@ class ValidationManager {
                 if(is_string($validatorLiterals)) {
                     $validatorLiterals = preg_split('/\s*,\s*/', $validatorLiterals);
                 }
-                list($fieldValid, $errorMessage) = $this->validateField($value, $validatorLiterals, $fieldName, $formValues);
+                $validators = [];
+                foreach ($validatorLiterals as $validatorLiteral) {
+                    $validator = Utils::parseValidator($validatorLiteral);
+                    $validators[] = $validator;
+                }
+
+                list($fieldValid, $validationError) = $this->validateField($value, $validators, $fieldName, $formValues);
                 if (!$fieldValid) {
                     $allValid           = false;
-                    $errors[$fieldName] = $errorMessage;
+                    $errors[$fieldName] = $validationError;
                 }
             }
         }
@@ -37,33 +45,27 @@ class ValidationManager {
         return [$allValid, $errors];
     }
 
-    private function validateField($value, $validatorLiterals, $fieldName, $formValues) {
-        $fieldValid   = true;
-        $errorMessage = null;
-
-        foreach ($validatorLiterals as $validatorLiteral) {
+    private function validateField($value, $validators, $fieldName, $formValues) {
+        foreach ($validators as list($validator, $validatorArgs)) {
             // empty value should passes all validators, except RequiredValidator
-            if(strlen($value) === 0 && $validatorLiteral !== 'required') {
+            if(strlen($value) === 0 && !($validator instanceof RequiredValidator)) {
                 continue;
             }
 
-            list($validator, $validatorArgs) = Utils::parseValidator($validatorLiteral);
-
             if (is_callable($validator)) {
-                list($succeed, $errorMessage) = call_user_func($validator, $value, $validatorArgs, $fieldName, $formValues);
+                list($succeed, $errorMessageKey) = call_user_func($validator, $value, $validatorArgs, $fieldName, $formValues);
             } elseif ($validator instanceOf ValidatorInterface) {
-                list($succeed, $errorMessage) = $validator->validate($value, $validatorArgs, $fieldName, $formValues);
+                list($succeed, $errorMessageKey) = $validator->validate($value, $validatorArgs, $fieldName, $formValues);
             } else {
-                throw new \InvalidArgumentException("Validator Info is invalid: {$validatorLiteral}");
+                throw new \InvalidArgumentException("Invalid validator in field {$fieldName}");
             }
 
             if (!$succeed) {
-                $fieldValid = false;
-                break;
+                return [false, new ValidationError($errorMessageKey, $validatorArgs)];
             }
         }
 
-        return [$fieldValid, $errorMessage];
+        return [true, null];
     }
 
 
