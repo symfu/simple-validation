@@ -10,7 +10,7 @@ class MinLengthValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new MinLengthValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

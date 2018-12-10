@@ -11,7 +11,7 @@ class MobileNumberValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new MobileNumberValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

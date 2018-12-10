@@ -10,7 +10,7 @@ class ExactLengthValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new ExactLengthValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

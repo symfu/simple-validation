@@ -10,7 +10,7 @@ class IdCardValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new IdCardValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

@@ -10,7 +10,7 @@ class EmailValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new EmailValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

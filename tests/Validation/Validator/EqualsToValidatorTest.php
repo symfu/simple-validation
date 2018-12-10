@@ -13,7 +13,7 @@ class EqualsToValidatorTest extends SimpleValidationTestCase {
 
         $validator = new EqualsToValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

@@ -8,7 +8,7 @@ use Symfu\SimpleValidation\Validator\RegexValidator;
 
 class RegexValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, RegexValidator::message];
 
         $validator = new RegexValidator();

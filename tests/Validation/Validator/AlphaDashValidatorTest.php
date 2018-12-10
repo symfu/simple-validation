@@ -10,7 +10,7 @@ class AlphaDashValidatorTest extends SimpleValidationTestCase
     {
         $validator = new AlphaDashValidator();
 
-        $valid = [true, ''];
+        $valid = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

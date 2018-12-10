@@ -10,7 +10,7 @@ class DateValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new DateValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // invaid tests

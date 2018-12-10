@@ -8,7 +8,7 @@ use Symfu\SimpleValidation\Validator\EnumValidator;
 
 class EnumValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, EnumValidator::message];
 
         $enumLiteral = 'A|B|c';

@@ -10,7 +10,7 @@ class MaxValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new MaxValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

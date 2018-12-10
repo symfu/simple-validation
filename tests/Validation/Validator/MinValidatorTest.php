@@ -10,7 +10,7 @@ class MinValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new MinValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

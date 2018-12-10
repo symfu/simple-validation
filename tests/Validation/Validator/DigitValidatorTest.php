@@ -12,7 +12,7 @@ class DigitValidatorTest extends SimpleValidationTestCase
     {
         $validator = new DigitValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

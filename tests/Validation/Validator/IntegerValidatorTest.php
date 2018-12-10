@@ -10,7 +10,7 @@ class IntegerValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new IntegerValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

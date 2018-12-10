@@ -10,7 +10,7 @@ class AlphaNumericValidatorTest extends SimpleValidationTestCase
     {
         $validator = new AlphaNumValidator();
 
-        $valid = [true, ''];
+        $valid = [true, null];
         $invalid = [false, $validator::message];
 
         // tests

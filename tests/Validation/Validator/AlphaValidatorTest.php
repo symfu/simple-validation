@@ -10,7 +10,7 @@ class AlphaValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new AlphaValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // tests

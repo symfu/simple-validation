@@ -10,7 +10,7 @@ class MaxLengthValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new MaxLengthValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

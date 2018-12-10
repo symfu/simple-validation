@@ -10,7 +10,7 @@ class NumericValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new NumericValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

@@ -10,7 +10,7 @@ class RequiredValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new RequiredValidator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

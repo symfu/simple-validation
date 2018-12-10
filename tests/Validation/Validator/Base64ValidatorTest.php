@@ -10,7 +10,7 @@ class Base64ValidatorTest extends SimpleValidationTestCase {
     public function testValidate() {
         $validator = new Base64Validator();
 
-        $valid   = [true, ''];
+        $valid   = [true, null];
         $invalid = [false, $validator::message];
 
         // valid

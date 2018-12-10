@@ -5,6 +5,7 @@ namespace Symfu\SimpleValidation\Test\Validators;
 use Symfu\SimpleValidation\Constants;
 use Symfu\SimpleValidation\Registry;
 use Symfu\SimpleValidation\Test\SimpleValidationTestCase;
+use Symfu\SimpleValidation\ValidationError;
 use Symfu\SimpleValidation\ValidationManager;
 
 class ValidationManagerTest extends SimpleValidationTestCase {
@@ -63,13 +64,14 @@ class ValidationManagerTest extends SimpleValidationTestCase {
             'password2'  => 'qwertyuio',
         ];
 
+        /** @var ValidationError[] $errors */
         list($valid, $errors) = $this->validationManager->validate($formValues, $fieldDefs);
         $this->assertFalse($valid);
-        $this->assertEquals('simple_validation.errors.required', $errors['username']);
-        $this->assertEquals('simple_validation.errors.alpha', $errors['nickname']);
-        $this->assertEquals('simple_validation.errors.min_length', $errors['first_name']);
-        $this->assertEquals('simple_validation.errors.max_length', $errors['last_name']);
-        $this->assertEquals('simple_validation.errors.email', $errors['email']);
-        $this->assertEquals('simple_validation.errors.equals_to', $errors['password2']);
+        $this->assertEquals('validation.errors.required', $errors['username']->getMessageKey());
+        $this->assertEquals('validation.errors.alpha', $errors['nickname']->getMessageKey());
+        $this->assertEquals('validation.errors.min_length', $errors['first_name']->getMessageKey());
+        $this->assertEquals('validation.errors.max_length', $errors['last_name']->getMessageKey());
+        $this->assertEquals('validation.errors.email', $errors['email']->getMessageKey());
+        $this->assertEquals('validation.errors.equals_to', $errors['password2']->getMessageKey());
     }
 }
