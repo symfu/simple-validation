@@ -22,12 +22,12 @@ class TransformerManager implements TransformerManagerInterface {
     private function transformField($direction, $transformers, $value, $fieldName, $formValues) {
         foreach ($transformers as $transformerLiteral) {
             list($transformerName, $arguments) = Utils::parseLiteral($transformerLiteral);
-            list($transformer, $transformerArg) = $this->loadTransformer($transformerName);
+            $transformer = $this->loadTransformer($transformerName);
 
             if ($transformer instanceOf TransformerInterface) {
-                $value = $transformer->transform($direction, $value, $transformerArg, $formValues);
+                $value = $transformer->transform($direction, $value, $arguments, $fieldName, $formValues);
             } elseif (is_callable($transformer)) {
-                $args = [$direction, $value, $transformerArg ?: null];
+                $args = [$direction, $value, $arguments ?: null, $fieldName, $formValues];
                 $value = call_user_func_array($transformer, $args);
             } else {
                 throw new \InvalidArgumentException("Processor Info is invalid: {$transformerLiteral}");

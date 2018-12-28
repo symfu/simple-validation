@@ -23,15 +23,16 @@ class ValidationManager implements ValidationManagerInterface {
 
         foreach ($fieldDefinitions as $fieldName => $fieldDef) {
             $value = isset($formValues[$fieldName]) ? $formValues[$fieldName] : null;
-            list($validatorLiterals) = $fieldDef;
+            list($validatorLiterals, $defaultValue, $transformerLiterals) = $fieldDef;
             if ($validatorLiterals) {
                 if(is_string($validatorLiterals)) {
                     $validatorLiterals = preg_split('/\s*,\s*/', $validatorLiterals);
                 }
                 $validators = [];
                 foreach ($validatorLiterals as $validatorLiteral) {
-                    $validator = $this->loadValidator($validatorLiteral);
-                    $validators[] = $validator;
+                    list($validatorName, $arguments) = Utils::parseLiteral($validatorLiteral);
+                    $validator = $this->loadValidator($validatorName);
+                    $validators[] = [$validator, $arguments];
                 }
 
                 list($fieldValid, $validationError) = $this->validateField($value, $validators, $fieldName, $formValues);
@@ -91,12 +92,12 @@ class ValidationManager implements ValidationManagerInterface {
             $fieldRules = [];
             foreach ($validatorInfos as $literal) {
                 list($validatorName, $arguments) = Utils::parseLiteral($literal);
-                list($validator, $args) = $this->loadValidator($validatorName, $arguments);
+                $validator = $this->loadValidator($validatorName);
                 if (!($validator instanceOf ValidatorInterface)) {
                     continue;
                 }
 
-                $rule = $validator->toJQueryValidateRule($args);
+                $rule = $validator->toJQueryValidateRule($arguments);
                 if ($rule) {
                     $fieldRules = array_merge($fieldRules, $rule);
                 }
