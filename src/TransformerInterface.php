@@ -1,7 +1,9 @@
 <?php
 namespace Symfu\SimpleValidation;
 
-interface TransformerInterface
-{
-    public function transform($value, $args = null, $formValues = array());
+interface TransformerInterface {
+    const TRANSFORM_IN  = 'IN';
+    const TRANSFORM_OUT = 'OUT';
+    
+    public function transform($direction, $value, $args = null, $formValues = []);
 }

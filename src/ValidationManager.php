@@ -3,7 +3,7 @@ namespace Symfu\SimpleValidation;
 
 use Symfu\SimpleValidation\Validator\RequiredValidator;
 
-class ValidationManager {
+class ValidationManager implements ValidationManagerInterface {
     private $jsRules = null;
 
     public function __construct() {
@@ -30,7 +30,7 @@ class ValidationManager {
                 }
                 $validators = [];
                 foreach ($validatorLiterals as $validatorLiteral) {
-                    $validator = Utils::parseValidator($validatorLiteral);
+                    $validator = $this->loadValidator($validatorLiteral);
                     $validators[] = $validator;
                 }
 
@@ -89,13 +89,14 @@ class ValidationManager {
             }
 
             $fieldRules = [];
-            foreach ($validatorInfos as $info) {
-                list($validator, $args) = Utils::parseValidator($info);
+            foreach ($validatorInfos as $literal) {
+                list($validatorName, $arguments) = Utils::parseLiteral($literal);
+                list($validator, $args) = $this->loadValidator($validatorName, $arguments);
                 if (!($validator instanceOf ValidatorInterface)) {
                     continue;
                 }
 
-                $rule = $validator->toJQueryValidateRule();
+                $rule = $validator->toJQueryValidateRule($args);
                 if ($rule) {
                     $fieldRules = array_merge($fieldRules, $rule);
                 }
@@ -107,5 +108,46 @@ class ValidationManager {
         }
 
         return $this->jsRules;
+    }
+
+    protected function loadValidator($validator) {
+        if ($validator instanceof ValidatorInterface) {
+            return $validator;
+        }
+
+        $cachedValidators = Registry::getRegistry(Constants::VALIDATOR_INSTANCES);
+        $customValidators = Registry::getRegistry(Constants::CUSTOM_VALIDATORS);
+
+        $validator = self::getInstance($validator, $cachedValidators, $customValidators);
+
+        if (is_callable($validator) && !($validator instanceOf ValidatorInterface)) {
+            throw new \InvalidArgumentException("Invalid validator {$validator}");
+        }
+
+        return $validator;
+    }
+
+    // do some dirty works here
+    private static function getInstance($objectName, Registry $instanceRegistry, Registry $customRegistry) {
+        if ($instanceRegistry->has($objectName)) {
+            $cachedInstance = $instanceRegistry->get($objectName);
+            return $cachedInstance;
+        }
+
+        $builtinValidatorKey = "simple_validation.validator.{$objectName}.class";
+        $customValidatorKey  = "simple_validation.validator.custom.{$objectName}.class";
+        $validatorClass = isset(Constants::$builtinValidators[$builtinValidatorKey]) ? Constants::$builtinValidators[$builtinValidatorKey] : $customRegistry->get($customValidatorKey);
+        if ($validatorClass) {
+            $validatorInstance = new $validatorClass();
+            $instanceRegistry->set($objectName, $validatorInstance);
+
+            return $validatorInstance;
+        }
+
+        if (is_callable($objectName)) {
+            return $objectName;
+        }
+
+        return null;
     }
 }
