@@ -4,7 +4,11 @@ namespace Symfu\SimpleValidation\Transformer;
 use Symfu\SimpleValidation\TransformerInterface;
 
 class TrimTransformer implements TransformerInterface {
-    public function transform($value, $args = null, $formValues = []) {
-        return trim($value);
+    public function transform($direction, $value, $args = null, $formValues = []) {
+        if($direction === TransformerInterface::TRANSFORM_IN) {
+            return trim($value);
+        } else {
+            return $value;
+        }
     }
 }
