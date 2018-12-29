@@ -12,8 +12,10 @@ class TransformerManager implements TransformerManagerInterface {
             list($validators, $defaultValue, $transformers) = $fieldDef;
             $value = isset($formValues[$fieldName]) ? $formValues[$fieldName] : $defaultValue;
             if ($transformers) {
-                $formValues[$fieldName] = $this->transformField($transformers, $value, $fieldName, $formValues, $direction);
+                $value = $this->transformField($transformers, $value, $fieldName, $formValues, $direction);
             }
+
+            $formValues[$fieldName] = $value;
         }
 
         return $formValues;
