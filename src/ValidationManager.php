@@ -49,7 +49,7 @@ class ValidationManager implements ValidationManagerInterface {
     private function validateField($value, $validators, $fieldName, $formValues) {
         foreach ($validators as list($validator, $validatorArgs)) {
             // empty value should passes all validators, except RequiredValidator
-            if(strlen($value) === 0 && !($validator instanceof RequiredValidator)) {
+            if(is_string($value) && strlen($value) === 0 && !($validator instanceof RequiredValidator)) {
                 continue;
             }
 

@@ -7,7 +7,14 @@ class RequiredValidator implements ValidatorInterface {
     const message = 'validation.errors.required';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
-        return strlen($value) > 0 ? [true, null] : [false, self::message];
+        $valid = false;
+        if(is_string($value)) {
+            $valid = strlen($value) > 0;
+        } else {
+            $valid = (bool)$value;
+        }
+
+        return $valid  ? [true, null] : [false, self::message];
     }
 
     public function toJQueryValidateRule($argument) {
