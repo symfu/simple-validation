@@ -27,7 +27,7 @@ class ValidationError implements \JsonSerializable {
      * @return mixed
      */
     public function getMessage() {
-        return $this->message;
+        return $this->message ?: $this->messageKey;
     }
 
     /**
@@ -66,7 +66,6 @@ class ValidationError implements \JsonSerializable {
         return $this;
     }
 
-
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -75,6 +74,11 @@ class ValidationError implements \JsonSerializable {
      * @since 5.4.0
      */
     function jsonSerialize() {
-        return get_object_vars($this);
+        $vars = get_object_vars($this);
+        if(!$vars['message']) {
+            $vars['message'] = $vars['messageKey'];
+        }
+
+        return $vars;
     }
 }
