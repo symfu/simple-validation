@@ -7,6 +7,10 @@ class EnumValidator implements ValidatorInterface {
     const message = 'validation.errors.enum';
 
     public function validate($value, $argument = null, $fieldName = null, $formValues = []) {
+        if(strlen($value) === 0) {
+            return [true, null];
+        }
+
         $enums = $this->parse($argument);
 
         if (in_array($value, $enums)) {
